@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  
+   
+  <div id="overlay"></div>
+  <div id="popup">
+   {% for i in c %}
+    <div class="employee-card">
+      <h1 style="color:black;">New Client Notification</h1>
+      <p>From Employee: {{ i.cname }}</p>
+      <p>{{i.cemail}}</p>
+      <p>{{i.cphone}}</p>
+      <p>{{i.csell}}</p>
+      <form action="{{ url_for('Accept', id=i._id) }}" method="POST">
+        <button type="submit" class="accept-button">Accept</button>
+      </form>
+      <form action="{{ url_for('Reject', id=i._id) }}" method="POST">
+        <button type="submit" class="accept-button">Reject</button>
+      </form>
+    </div>
+   {% endfor %}
+   </div> 
+
+    <nav>
+        <div class="logo">
+            <h1>Thirulingesh Admin</h1>
+        </div>
+        <div class="links">
+          
+            <li>
+                <a href="/hmi-manage/employee">Employees</a>
+            </li>
+            <li>
+                <a href="/show-accpted">Accepted List</a>
+            </li>
+        </div>
+    </nav>
+
+    <section id="main">
+      <h1>Notificatios Will Appear Here</h1>
+    </section>
+    
+ 
+
+
+</body>
+</html>
+ <style>
+ body{
+  margin:0;
+  padding: 0;
+  background-color:rgb(0, 0, 0);
+  color:white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+ }
+
+  nav{
+    width:100%;
+    height:65px;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+  }
+
+  nav .links{
+    display: flex;
+    margin-top:20px;
+    gap:10px;
+    
+  }
+
+  nav .links li{
+    list-style:none;
+    
+  }
+
+  nav .links li a{
+    color:white;
+    text-decoration:none;
+
+    
+  }
+
+  #main{
+    width:100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #main h1{
+    color:white;
+    font-size: 35px;
+  }
+  #overlay{
+    width:100%;
+    height: 100vh;
+    background-color:rgba(0, 0, 0, 0.68);
+    position: absolute;
+    z-index: -1;
+    
+  }
+
+  #popup{
+   
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50% ,-50%);
+    z-index: 1000;
+    display: none;
+
+  }
+    .employee-card {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+      font-family: Arial, sans-serif;
+      max-width: 400px;
+    }
+
+    .employee-card p {
+      color:black;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+    }
+
+    .employee-card form {
+      display: inline;
+    }
+
+    .accept-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .reject-button{
+      background-color: #e00707d5;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .accept-button:hover {
+      background-color: #45a049;
+    }
+  </style>
+
+  <script>
+ 
+
+    window.addEventListener("load" , function(){
+    let popup = document.getElementById("popup")
+         
+    let overlay = document.getElementById("overlay")
+    if('{{c}}'){
+      popup.style.display = "block"
+      overlay.style.display = "none"
+    }
+    else{
+      popup.style.display = "none"
+      overlay.style.display = "block"
+    }
+    })
+    
+  
+  </script>
