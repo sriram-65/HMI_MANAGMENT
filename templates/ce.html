@@ -59,26 +59,74 @@
     button:hover {
       background-color: #0056b3;
     }
+     .welcome {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 400px;
+      margin: 20px auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-    .welcome {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #444;
+    .welcome img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-top: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .welcome-text {
+      font-size: 1.2rem;
+      color: #333;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
   <h1>Client Details Form</h1>
-  <div class="welcome">Welcome to {{ email }}</div>
+    <div class="welcome">
+    <div class="welcome-text">
+      Email : {{ email }}
+    </div>
+    <br>
+    <div class="welcome-text">
+      Phone_no : {{U.Employee_name}}
+    </div>
+    <br>
+      <div class="welcome-text">
+      Phone_no : {{U.Employee_phone_no}}
+    </div>
+    <br>
+
+    <div class="welcome-text">
+      Your Role : {{U.Employee_Role}}
+    </div>
+    <img src="{{U.Employee_Pic}}" alt="Your Profile img">
+    <a href="/logout"> Logout </a>
+  </div>
 
   <form action="/get-clint-deatils" method="POST">
     <input type="text" name="cname" placeholder="Enter Client Name" required>
     <input type="email" name="cemail" placeholder="Enter Client Email" required>
     <input type="tel" name="cphone" placeholder="Enter Phone Number" required>
     <textarea name="csell" rows="4" placeholder="What does the Client sell?" required></textarea>
+  
     <button type="submit">Submit</button>
   </form>
 
 </body>
 </html>
+<script>
+  let form = document.querySelector("form")
+  let btn = document.querySelector("button")
+  form.addEventListener("submit" , function(){
+    btn.disabled = true;
+    btn.innerText = "Submitting...";
+  })
+</script>

@@ -99,17 +99,20 @@
 
     <h1>Admin Panel</h1>
 
-    <form action="/hmi-manage/employee" method="POST">
+    <form action="/hmi-manage/employee" method="POST" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Enter Name" required>
         <input type="email" name="email" placeholder="Enter Email" required>
         <input type="number" name="phone" placeholder="Enter Phone No" required>
-        <select name="role">
+        <label> Upload Employee Photo </label>
+        <input type="file" name="pic">
+        <select name="role" style="padding:10px 10px 10px; ">
             <option value="ClinetEmployee">Clinet Adding Employee</option>
             <option value="Developer">Developer</option>
         </select>
         <button type="submit">Submit</button>
     </form>
 
+    
     <table>
         <thead>
             <tr>

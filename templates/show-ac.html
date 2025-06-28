@@ -31,7 +31,7 @@
     }
 
       .accept-button {
-      background-color: #4CAF50;
+      background-color: red;
       color: white;
       border: none;
       padding: 8px 16px;
@@ -39,19 +39,71 @@
       cursor: pointer;
       transition: background-color 0.2s;
     }
+
+    .reject-main{
+      background-color: #13121256;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      cursor: not-allowed;
+    }
+     .r-button {
+      background-color:rgb(6, 14, 6);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
 
-  <h1 style="text-align:center;"> Yours Accepted List </h1>
+  <h1 style="text-align:center;"> Yours accepted And Rejecetd List </h1>
 
   <div class="grid-container">
     {% for i in s %}
       <div class="client-card">
+      
+        {%if i.sended_developer == true%}
+          
+          {%if i.Developer_accepted == true%}
+           <p> Developer Accpetd ✔ </p>
+           <p> Developer Mail : {{i.for_Devloper_email}} </p>
+           <a href="/get-dev-info/{{i.for_Devloper_email}}"> Show developer Info <a>
+          <button> <a href="/del/{{i._id}}"> Remove Now </a> </button>
+           {%else%}
+            {%if i.Developer_accepted == "Rejected" %}
+             <p> Sorry Developer Rejected Your Request 😐</p>
+             <form action="{{url_for('Re_Req' , re_id=i._id)}}" method="POST">
+              <button>Re-Request Now</button>
+             </form>
+            {%else%}
+            <p> Your Request Send To Developer Wait For Response </p>
+            {%endif%}
+          {%endif%}
+        {%else%}
+        {%if i.Accepted == true%}
         <p>Name: {{ i.cname }}</p>
         <p>Email: {{ i.cemail }}</p>
         <p>Sell: {{ i.csell }}</p>
-        <button class="accept-button" > Send this To Developer </button>
+        <form action="{{url_for('send_client' , c_id=i._id)}}" method="POST">
+
+        <button class="accept-button" type="submit"> Send this To Developer </button>
+        
+        </form>
+        {%else%}
+        <div class="reject-main">
+          <p>Name: {{ i.cname }} </p>
+          <p>Email: {{ i.cemail }} </p>
+          <p>Sell: {{ i.csell }} </p>
+          <button class="r-button" disabled> This Has Been Rejected By You</button>
+        </div>
+
+        {%endif%}
+        {%endif%}
       </div>
     {% endfor %}
   </div>

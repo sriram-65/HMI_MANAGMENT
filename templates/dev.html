@@ -1,11 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Developer Panel</title>
+  <style>
+    :root {
+      --primary: #4361ee;
+      --success: #4cc9f0;
+      --danger: #f72585;
+      --warning: #f8961e;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background-color: #f5f7fa;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .client-info {
+      margin-bottom: 15px;
+    }
+    
+    .client-info p {
+      margin: 8px 0;
+    }
+    
+    strong {
+      color: var(--primary);
+    }
+    
+    form {
+      display: inline-block;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+    
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+    
+    button:hover {
+      background-color: #3a56d4;
+    }
+    
+    .done-message {
+      color: var(--success);
+      font-weight: 500;
+    }
+    
+    hr {
+      border: 0;
+      height: 1px;
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+      margin: 40px 0;
+    }
+    
+    /* Status messages */
+    [style*="color: red"] {
+      font-weight: 500;
+    }
+    
+    [style*="color: orange"] {
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body>
-    welcome to Developer Page {{email}}
+
+  <h1>Developer Admin Requests</h1>
+  
+  {% for i in d %}
+    <div class="card">
+      <div class="client-info">
+        <p><strong>Name:</strong> {{ i.cname }}</p>
+        <p><strong>Contact:</strong> {{ i.csell }}</p>
+        <p><strong>Email:</strong> {{ i.cemail }}</p>
+
+        {% if i.Developer_accepted == True %}
+          <p class="done-message">✅ You Accepted This Request.</p>
+          <button> <a href="/dev/delete/{{i._id}}" style="color:white; text-decoration:none;"> Remove This </a></button>
+
+        {% elif i.Developer_accepted == "Rejected" %}
+          <p style="color: red;">❌ You Rejected This Request.</p>
+
+        {% else %}
+          <form action="{{ url_for('Devloper_accept', d_id=i._id) }}" method="POST">
+            <button>Accept</button>
+          </form>
+          <form action="{{ url_for('Developer_reject', d_id=i._id) }}" method="POST">
+            <button style="background-color: var(--danger);">Reject</button>
+          </form>
+        {% endif %}
+
+        {% if i.Re_Request == True %}
+          <p style="color: orange;">🔁 Admin sent a Re-Request for this project!</p>
+
+          {% if i.Developer_accepted != True %}
+            <form action="{{ url_for('Devloper_accept', d_id=i._id) }}" method="POST">
+              <button style="background-color: var(--warning);">Accept Again</button>
+            </form>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+
+  <hr>
+
 </body>
 </html>
