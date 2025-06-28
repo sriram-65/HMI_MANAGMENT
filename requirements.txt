@@ -3,8 +3,5 @@ gunicorn
 pymongo
 flask_cors
 flask_mail
-<<<<<<< HEAD
 cloudinary
-=======
-cloudinary
->>>>>>> 3114b892222a9f76279eaefe91b67e94c1c79e66
+
