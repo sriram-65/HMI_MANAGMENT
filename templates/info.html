@@ -11,8 +11,9 @@
 
     <p> Developer Msgs : </p>
 
-    <form action="">
-        <input type="text">
+    <form action="/send-msg-dev" method="POST">
+        <input name="msg" type="text">
+        <input name="email_dev" type="hidden" value="{{email}}">
         <button>Send As Msg</button>
     </form>
 </body>

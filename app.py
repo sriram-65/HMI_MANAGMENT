@@ -29,6 +29,7 @@ CLINET_DATILS = HMI["CLINET_DATILS"]
 ACCEPTED_LIST = HMI['ACCEPTED_LIST']
 DEVELOPER_LIST = HMI["DEVELOPER_LIST"]
 RE_REQUESTED = HMI["RE_REQUESTED"]
+MEASSAGES = HMI["MEASSAGES"]
 
 cloudinary.config(
     cloud_name="dbrmvywb0",
@@ -157,29 +158,29 @@ def dash(role):
             
     elif role == "Developer":
         if (session.get("Verifed")):
-            
-            otp_code = str(random.randint(43270 , 93270))
-            now = datetime.datetime.now()
-            session["opt_time"] = now.strftime('%Y-%m-%d %H:%M:%S')
-            session['otp'] = otp_code
+              D = DEVELOPER_LIST.find({}).sort("_id" , -1)
+              return render_template("dev.html" , email = email , d=D  )
+          
+        otp_code = str(random.randint(43270 , 93270))
+        now = datetime.datetime.now()
+        session["opt_time"] = now.strftime('%Y-%m-%d %H:%M:%S')
+        session['otp'] = otp_code
                 
-            N = EMPLOYEE_REGISTER.find_one({"Employee_email":email})
+        N = EMPLOYEE_REGISTER.find_one({"Employee_email":email})
                 
-            Name = N["Employee_name"]
+        Name = N["Employee_name"]
                 
-            msg = Message(
-            subject=f"Your OTP CODE - HMI , {Name} ",
-            recipients=[email],
-            sender="sriram65raja@gmail.com",
-            body=f"Here is Your OTP code : {otp_code} Don't Share this To anyone \n \n Developed By SRIRAM")
+        msg = Message(
+        subject=f"Your OTP CODE - HMI , {Name} ",
+        recipients=[email],
+        sender="sriram65raja@gmail.com",
+        body=f"Here is Your OTP code : {otp_code} Don't Share this To anyone \n \n Developed By SRIRAM")
                 
-            mail.send(msg)
+        mail.send(msg)
                 
-            return redirect(url_for("verify")) 
+        return redirect(url_for("verify")) 
         
-        D = DEVELOPER_LIST.find({}).sort("_id" , -1)
-       
-        return render_template("dev.html" , email = email , d=D )
+      
     else:
         return "404 Page Not Found"
    
@@ -258,6 +259,28 @@ def send_client(c_id):
     return redirect("/show-accpted")
 
 
+@app.route("/show-admin-meassages")
+def showAdmin():
+    email = session.get("email")
+    m = MEASSAGES.find({"Developer_mail":email})
+    return render_template("admin-msg.html" , m=m , email=email)
+
+@app.route("/send-msg-dev" , methods=["POST"])
+def send_msg_dev():
+    msg = request.form.get("msg")
+    email_dev = request.form.get("email_dev")
+    
+    data={
+        "From Admin":"Thirulingeshwar",
+        "msg":msg,
+        "Developer_mail":email_dev
+    }
+    
+    MEASSAGES.insert_one(data)
+    
+    return jsonify({"Suecess":"Meassage Added"})
+    
+    
 
 @app.route("/developer-accept/<d_id>", methods=["POST"])
 def Devloper_accept(d_id):
@@ -385,7 +408,5 @@ def delete_all_records():
         "deleted_count": result.deleted_count
     })
     
-    
-
 if __name__ == "__main__":
     app.run(debug=True , port=1212)
